@@ -24,7 +24,7 @@ spec:
             value: rethinkdb
           - name: REDIS_HOST
             value: freethewumpus-redis:6379
-          - name: DOMAIN_MANAGER_HOST
+          - name: DOMAIN_MANAGER_HOSTNAME
             value: ftw-domain-manager:8000
           - name: TOKEN
             valueFrom:
