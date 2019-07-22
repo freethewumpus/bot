@@ -16,6 +16,13 @@ func GenerateToken(user User) string {
 	if err != nil {
 		panic(err)
 	}
+	err = r.Table("tokens").Insert(&Token{
+		Id: id,
+		Uid: user.Id,
+	}).Exec(RethinkConnection)
+	if err != nil {
+		panic(err)
+	}
 	return id
 }
 
