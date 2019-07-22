@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 )
 
 type DomainValidationResponse struct {
@@ -97,5 +98,6 @@ func AddDomain(ChannelID string, MessageID string, menu *EmbedMenu, client *disc
 		}
 	}
 
+	time.Sleep(time.Duration(5) * time.Second)
 	menu.Display(ChannelID, msg.ID, client)
 }
