@@ -23,7 +23,7 @@ func CreateNewMenu(MenuID string, msg discordgo.Message) *EmbedMenu {
 		Color: 255,
 	}, MenuButton{
 		Description: "This is where you set your default domain, manage your domains, and add new ones.",
-		Name: "Domain",
+		Name: "Domain Management",
 		Emoji: "🕸",
 	})
 	Domains.AddBackButton()
@@ -32,6 +32,27 @@ func CreateNewMenu(MenuID string, msg discordgo.Message) *EmbedMenu {
 		Name: "Add Domain",
 		Description: "This will guide you through adding a domain.",
 	}] = AddDomain
+
+	Tokens := MainMenu.NewChildMenu(discordgo.MessageEmbed{
+		Title: "Tokens Management",
+		Description: "This is where you can add or revoke tokens.",
+		Color: 255,
+	}, MenuButton{
+		Description: "This is where you can add or revoke tokens.",
+		Name: "Token Management",
+		Emoji: "🎟",
+	})
+	Tokens.AddBackButton()
+	Tokens.Reactions[MenuButton{
+		Emoji: "🥊",
+		Name: "Revoke Tokens",
+		Description: "This will revoke all your tokens.",
+	}] = TokenInvalidationEmbed
+	Tokens.Reactions[MenuButton{
+		Emoji: "🎟",
+		Name: "Generate Token",
+		Description: "This will generate a token. This requires DM's to be on.",
+	}] = TokenGenerationEmbed
 
 	return &MainMenu
 }
