@@ -7,3 +7,4 @@ The bot for freethewump.us. The following environment variables should be config
 - `RETHINK_PASSWORD` - The RethinkDB password. Defaults to none.
 - `RETHINK_USER` - The RethinkDB user. Defaults to `admin`.
 - `TOKEN` - The Discord bot token.
+- `CLUSTER_IP` - The cluster IP.

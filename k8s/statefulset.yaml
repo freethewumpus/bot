@@ -31,5 +31,7 @@ spec:
               secretKeyRef:
                 name: ftw-bot
                 key: token
+          - name: CLUSTER_IP
+            value: "188.166.136.153"
       imagePullSecrets:
         - name: gitlab
