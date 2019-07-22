@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ftw-bot
+spec:
+  replicas: 1
+  serviceName: ftw-bot
+  selector:
+    matchLabels:
+      run: ftw-bot
+  template:
+    metadata:
+      labels:
+        run: ftw-bot
+    spec:
+      containers:
+        - name: jakegealer-me
+          image: registry.gitlab.com/freethewumpus/bot
+          imagePullPolicy: Always
+          env:
+          - name: RETHINK_HOST
+            value: rethinkdb-rethinkdb-cluster
+          - name: RETHINK_PASSWORD
+            value: rethinkdb
+          - name: REDIS_HOST
+            value: freethewumpus-redis:6379
+          - name: DOMAIN_MANAGER_HOST
+            value: ftw-domain-manager:8000
+          - name: TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: ftw-bot
+                key: token
+      imagePullSecrets:
+        - name: gitlab
