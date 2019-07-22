@@ -23,18 +23,25 @@ func TokenGenerationEmbed(ChannelID string, MessageID string, menu *EmbedMenu, c
 	_ = client.MessageReactionsRemoveAll(ChannelID, MessageID)
 	user := GetUser(menu.MenuInfo.Author)
 	token := GenerateToken(user)
-	_, err := client.ChannelMessageSend(menu.MenuInfo.Author, fmt.Sprintf("Your token is `%s`.", token))
 	embed := &discordgo.MessageEmbed{
 		Color: 32768,
 		Title: "Token generated",
 		Description: "A token has been generated and DM'd to you. Returning to the token management page.",
 	}
+	ErrEmbed := &discordgo.MessageEmbed{
+		Color: 16711680,
+		Title: "DM error",
+		Description: "The bot could not DM you. Do you have DM's off or have you blocked the bot?",
+	}
+	UserChannel, err := client.UserChannelCreate(menu.MenuInfo.Author)
 	if err != nil {
-		embed = &discordgo.MessageEmbed{
-			Color: 16711680,
-			Title: "DM error",
-			Description: "The bot could not DM you. Do you have DM's off or have you blocked the bot?",
-		}
+		embed = ErrEmbed
+	} else {
+		_, err = client.ChannelMessageSend(UserChannel.ID, fmt.Sprintf("Your token is `%s`.", token))
+	}
+
+	if err != nil {
+		embed = ErrEmbed
 	}
 	_, err = client.ChannelMessageEditComplex(&discordgo.MessageEdit{
 		ID: MessageID,
@@ -44,7 +51,7 @@ func TokenGenerationEmbed(ChannelID string, MessageID string, menu *EmbedMenu, c
 	if err != nil {
 		return
 	}
-	time.Sleep(time.Minute * time.Duration(5))
+	time.Sleep(time.Second * time.Duration(5))
 	menu.Display(ChannelID, MessageID, client)
 }
 
@@ -81,6 +88,6 @@ func TokenInvalidationEmbed(ChannelID string, MessageID string, menu *EmbedMenu,
 	if err != nil {
 		return
 	}
-	time.Sleep(time.Minute * time.Duration(5))
+	time.Sleep(time.Second * time.Duration(5))
 	menu.Display(ChannelID, MessageID, client)
 }
