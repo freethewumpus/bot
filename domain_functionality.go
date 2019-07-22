@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -12,8 +13,8 @@ import (
 )
 
 type DomainValidationResponse struct {
-	success bool
-	message *string
+	Success bool   `json:"success"`
+	Message string `json:"message"`
 }
 
 func ValidateDomain(Domain string) *string {
@@ -21,27 +22,34 @@ func ValidateDomain(Domain string) *string {
 		err := "The domain already exists in the database."
 		return &err
 	}
+
+	HttpClient := http.Client{
+		Timeout: time.Second * 10,
+	}
+
 	URL := fmt.Sprintf("http://%s/?domain=%s", os.Getenv("DOMAIN_MANAGER_HOSTNAME"), url.QueryEscape(Domain))
-	resp, err := http.Get(URL)
+	req, err := http.NewRequest(http.MethodGet, URL, nil)
+	if err != nil {
+		panic(err)
+	}
+	resp, err := HttpClient.Do(req)
 	if err != nil {
 		panic(err)
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode == 200 {
-		return nil
-	} else {
-		var ResponseBuffer []byte
-		_, err := resp.Body.Read(ResponseBuffer)
-		if err != nil {
-			panic(err)
-		}
-		var JSONResponse DomainValidationResponse
-		err = json.Unmarshal(ResponseBuffer, JSONResponse)
-		if err != nil {
-			panic(err)
-		}
-		return JSONResponse.message
+	JSONResponse := DomainValidationResponse{}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		panic(err)
 	}
+	err = json.Unmarshal(body, &JSONResponse)
+	if err != nil {
+		panic(err)
+	}
+	if JSONResponse.Success {
+		return nil
+	}
+	return &JSONResponse.Message
 }
 
 func AddDomain(ChannelID string, MessageID string, menu *EmbedMenu, client *discordgo.Session) {
@@ -69,7 +77,7 @@ func AddDomain(ChannelID string, MessageID string, menu *EmbedMenu, client *disc
 			embed := &discordgo.MessageEmbed{
 				Color: 16711680,
 				Title: "Invalid domain",
-				Description: fmt.Sprintf("There was an error processing your domain: ```%s```Returning to the domain management page.", err),
+				Description: fmt.Sprintf("There was an error processing your domain: ```%s```Returning to the domain management page.", *err),
 			}
 			_, err := client.ChannelMessageEditComplex(&discordgo.MessageEdit{
 				ID: MessageID,
