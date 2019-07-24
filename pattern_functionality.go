@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/bwmarrin/discordgo"
 	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
-	"os"
 )
 
 func ChangePattern(ChannelID string, MessageID string, menu *EmbedMenu, client *discordgo.Session) {
