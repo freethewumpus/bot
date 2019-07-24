@@ -14,6 +14,8 @@ var RedisConnection *redis.Client
 var RethinkConnection *r.Session
 
 func main() {
+	UtilsInit()
+
 	MenuCache = map[string]*EmbedMenu{}
 
 	RedisHost := os.Getenv("REDIS_HOST")

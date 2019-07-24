@@ -54,5 +54,23 @@ func CreateNewMenu(MenuID string, msg discordgo.Message) *EmbedMenu {
 		Description: "This will generate a token. This requires DM's to be on.",
 	}] = TokenGenerationEmbed
 
+	UserInfo := GetUser(msg.Author.ID)
+
+	FileNamingPattern := MainMenu.NewChildMenu(discordgo.MessageEmbed{
+		Title: "File Naming Pattern",
+		Description: GeneratePatternDescription(UserInfo),
+		Color: 255,
+	}, MenuButton{
+		Description: "This is where you can set your file naming pattern.",
+		Name: "File Naming Pattern",
+		Emoji: "🗄",
+	})
+	FileNamingPattern.AddBackButton()
+	FileNamingPattern.Reactions[MenuButton{
+		Description: "This will allow you to change your file naming pattern.",
+		Name: "Change Pattern",
+		Emoji: "🗄",
+	}] = ChangePattern
+
 	return &MainMenu
 }

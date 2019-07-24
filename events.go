@@ -24,12 +24,6 @@ func OnMessage(client *discordgo.Session, msg *discordgo.MessageCreate) {
 			OpenMenu(client, msg)
 		}()
 	}
-	go func() {
-		if msg.Content == "echo" {
-			msg := WaitForMessage(msg.ChannelID, msg.Author.ID, 0)
-			fmt.Println(msg)
-		}
-	}()
 	MessageWaitHandler(msg.Message)
 }
 
