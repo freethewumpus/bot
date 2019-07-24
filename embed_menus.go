@@ -33,13 +33,16 @@ func (emm EmbedMenu) Display(ChannelID string, MessageID string, client *discord
 	EmbedCopy.Footer = &discordgo.MessageEmbedFooter{
 		Text: emm.MenuInfo.MenuID,
 	}
+	Fields := make([]*discordgo.MessageEmbedField, 0)
 	for k := range emm.Reactions {
-		EmbedCopy.Fields = append(EmbedCopy.Fields, &discordgo.MessageEmbedField{
+		Fields = append(Fields, &discordgo.MessageEmbedField{
 			Name: fmt.Sprintf("%s %s", k.Emoji, k.Name),
 			Value: k.Description,
 			Inline: false,
 		})
 	}
+	EmbedCopy.Fields = Fields
+
 	_, err := client.ChannelMessageEditComplex(&discordgo.MessageEdit{
 		Embed: EmbedCopy,
 		ID: MessageID,
