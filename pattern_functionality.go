@@ -30,7 +30,7 @@ func ChangePattern(ChannelID string, MessageID string, menu *EmbedMenu, client *
 		return
 	}
 
-	_ = client.ChannelMessageDelete(ChannelID, MessageID)
+	_ = client.ChannelMessageDelete(ChannelID, UserMessage.ID)
 
 	if len(UserMessage.Content) < 4 || len(UserMessage.Content) > 150 {
 		return
