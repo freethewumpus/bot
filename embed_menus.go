@@ -22,7 +22,7 @@ type MenuButton struct {
 type EmbedMenu struct {
 	Reactions map[MenuButton]func(ChannelID string, MessageID string, menu *EmbedMenu, client *discordgo.Session)
 	parent *EmbedMenu
-	Embed discordgo.MessageEmbed
+	Embed *discordgo.MessageEmbed
 	MenuInfo *MenuInfo
 }
 
@@ -41,7 +41,7 @@ func (emm EmbedMenu) Display(ChannelID string, MessageID string, client *discord
 		})
 	}
 	_, err := client.ChannelMessageEditComplex(&discordgo.MessageEdit{
-		Embed: &EmbedCopy,
+		Embed: EmbedCopy,
 		ID: MessageID,
 		Channel: ChannelID,
 	})
@@ -81,7 +81,7 @@ func (emm EmbedMenu) AddBackButton() {
 func NewEmbedMenu(embed discordgo.MessageEmbed, info *MenuInfo) EmbedMenu {
 	menu := EmbedMenu{
 		Reactions: map[MenuButton]func(ChannelID string, MessageID string, menu *EmbedMenu, client *discordgo.Session){},
-		Embed: embed,
+		Embed: &embed,
 		MenuInfo: info,
 	}
 	return menu
