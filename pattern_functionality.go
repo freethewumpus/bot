@@ -6,6 +6,8 @@ import (
 )
 
 func ChangePattern(ChannelID string, MessageID string, menu *EmbedMenu, client *discordgo.Session) {
+	_ = client.MessageReactionsRemoveAll(ChannelID, MessageID)
+
 	defer menu.Display(ChannelID, MessageID, client)
 
 	UserInfo := GetUser(menu.MenuInfo.Author)
@@ -27,6 +29,8 @@ func ChangePattern(ChannelID string, MessageID string, menu *EmbedMenu, client *
 	if UserMessage == nil {
 		return
 	}
+
+	_ = client.ChannelMessageDelete(ChannelID, MessageID)
 
 	if len(UserMessage.Content) < 4 || len(UserMessage.Content) > 150 {
 		return
