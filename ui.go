@@ -32,11 +32,17 @@ func CreateNewMenu(MenuID string, msg discordgo.Message) *EmbedMenu {
 		Name: "Add Domain",
 		Description: "This will guide you through adding a domain.",
 	}] = AddDomain
+	user := GetUser(msg.Author.ID)
 	Domains.Reactions[MenuButton{
 		Emoji: "👥",
 		Name: "Get Owned Domains",
 		Description: "This will get all owned domains.",
-	}] = DomainPages("Owned Domains", GetUser(msg.Author.ID).GetOwnedDomains, 0, ShowDomain)
+	}] = DomainPages("Owned Domains", user.GetOwnedDomains, 0, ShowDomain)
+	Domains.Reactions[MenuButton{
+		Emoji: "👱",
+		Name: "Get Whitelisted Domains",
+		Description: "This will get all whitelisted domains.",
+	}] = DomainPages("Whitelisted Domains", user.GetWhitelistedDomains, 0, ShowDomain)
 	Domains.Reactions[MenuButton{
 		Emoji: "🌐",
 		Name: "Get Public Domains",

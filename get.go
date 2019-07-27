@@ -57,3 +57,22 @@ func (u User) GetOwnedDomains() []Domain {
 	}
 	return OwnedDomains
 }
+
+func (u User) GetWhitelistedDomains() []Domain {
+	var OwnedDomains []Domain
+	cursor, err := r.Table("domains").GetAllByIndex("whitelist", u.Id).Run(RethinkConnection)
+	if err != nil {
+		panic(err)
+	}
+	err = cursor.All(&OwnedDomains)
+	if err != nil {
+		panic(err)
+	}
+	var ParsedDomain []Domain
+	for _, v := range OwnedDomains {
+		if v.Owner != u.Id && !v.Public {
+			ParsedDomain = append(ParsedDomain, v)
+		}
+	}
+	return ParsedDomain
+}
