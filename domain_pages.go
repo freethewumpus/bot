@@ -43,12 +43,12 @@ func DomainPages(
 				}] = DomainPages(title, domains, after + 5, function)
 			}
 
-			letters := "🇦🇧🇨🇩🇪"
+			letters := []string{"🇦", "🇧", "🇨", "🇩", "🇪"}
 			for i, v := range DomainPart {
 				NewEmbedMenu.Reactions[MenuButton{
 					Name: v.Id,
 					Description: fmt.Sprintf("Owned by <@%s>.", v.Owner),
-					Emoji: string(letters[i]),
+					Emoji: letters[i],
 				}] = function(v.Id)
 			}
 
