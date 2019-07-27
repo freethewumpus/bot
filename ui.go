@@ -32,18 +32,16 @@ func CreateNewMenu(MenuID string, msg discordgo.Message) *EmbedMenu {
 		Name: "Add Domain",
 		Description: "This will guide you through adding a domain.",
 	}] = AddDomain
-	OwnedDomains := GetUser(msg.Author.ID).GetOwnedDomains()
-	PublicDomains := GetPublicDomains()
 	Domains.Reactions[MenuButton{
 		Emoji: "👥",
 		Name: "Get Owned Domains",
 		Description: "This will get all owned domains.",
-	}] = DomainPages("Owned Domains", OwnedDomains, 0, ShowDomain)
+	}] = DomainPages("Owned Domains", GetUser(msg.Author.ID).GetOwnedDomains, 0, ShowDomain)
 	Domains.Reactions[MenuButton{
 		Emoji: "🌐",
 		Name: "Get Public Domains",
 		Description: "This will get all public domains.",
-	}] = DomainPages("Public Domains", PublicDomains, 0, ShowDomain)
+	}] = DomainPages("Public Domains", GetPublicDomains, 0, ShowDomain)
 
 	Tokens := MainMenu.NewChildMenu(discordgo.MessageEmbed{
 		Title: "Tokens Management",

@@ -6,10 +6,12 @@ import (
 )
 
 func DomainPages(
-	title string, domains []Domain, after int,
+	title string, DomainFunc func() []Domain, after int,
 	function func(item string) func(ChannelID string, MessageID string, menu *EmbedMenu, client *discordgo.Session)) func(ChannelID string, MessageID string, menu *EmbedMenu, client *discordgo.Session) {
 		return func(ChannelID string, MessageID string, menu *EmbedMenu, client *discordgo.Session) {
 			_ = client.MessageReactionsRemoveAll(ChannelID, MessageID)
+
+			domains := DomainFunc()
 
 			embed := discordgo.MessageEmbed{
 				Title: title,
