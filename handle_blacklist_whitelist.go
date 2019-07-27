@@ -18,6 +18,8 @@ func IsNumber(Character int32) bool {
 
 func HandleBlackWhitelist(OuterMenu *EmbedMenu, Whitelist bool, domain string) func(ChannelID string, MessageID string, _ *EmbedMenu, client *discordgo.Session) {
 	return func(ChannelID string, MessageID string, _ *EmbedMenu, client *discordgo.Session) {
+		_ = client.MessageReactionsRemoveAll(ChannelID, MessageID)
+
 		defer ShowDomain(domain)(ChannelID, MessageID, OuterMenu, client)
 
 		var ListName string
