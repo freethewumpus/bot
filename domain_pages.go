@@ -34,7 +34,7 @@ func DomainPages(
 					Name: "Back Page",
 					Description: "Go back a page.",
 					Emoji: "◀",
-				}] = DomainPages(title, DomainFunc, after + 5, function)
+				}] = DomainPages(title, DomainFunc, after - 5, function)
 			}
 
 			if len(domains) > 5 && len(DomainPart) == 5 {
