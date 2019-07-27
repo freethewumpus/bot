@@ -72,7 +72,7 @@ func (emm EmbedMenu) NewChildMenu(embed discordgo.MessageEmbed, item MenuButton)
 
 func (emm EmbedMenu) AddBackButton() {
 	emm.Reactions[MenuButton{
-		Description: "Goes back a page.",
+		Description: "Goes back to the parent menu.",
 		Name: "Back",
 		Emoji: "⬆",
 	}] = func(ChannelID string, MessageID string, _ *EmbedMenu, client *discordgo.Session) {

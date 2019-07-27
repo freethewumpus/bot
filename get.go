@@ -44,3 +44,16 @@ func GetDomain(DomainName string) *Domain {
 	}
 	return &domain
 }
+
+func (u User) GetOwnedDomains() []Domain {
+	var OwnedDomains []Domain
+	cursor, err := r.Table("users").GetAllByIndex("owner", u.Id).Run(RethinkConnection)
+	if err != nil {
+		panic(err)
+	}
+	err = cursor.All(&OwnedDomains)
+	if err != nil {
+		panic(err)
+	}
+	return OwnedDomains
+}
