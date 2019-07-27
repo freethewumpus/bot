@@ -34,7 +34,7 @@ func DomainPages(
 					Name: "Back Page",
 					Description: "Go back a page.",
 					Emoji: "◀",
-				}] = DomainPages(title, domains, after + 5, function)
+				}] = DomainPages(title, DomainFunc, after + 5, function)
 			}
 
 			if len(domains) > 5 && len(DomainPart) == 5 {
@@ -42,7 +42,7 @@ func DomainPages(
 					Name: "Forward Page",
 					Description: "Go forward a page.",
 					Emoji: "▶",
-				}] = DomainPages(title, domains, after + 5, function)
+				}] = DomainPages(title, DomainFunc, after + 5, function)
 			}
 
 			letters := []string{"🇦", "🇧", "🇨", "🇩", "🇪"}
