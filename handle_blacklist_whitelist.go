@@ -46,6 +46,7 @@ func HandleBlackWhitelist(OuterMenu *EmbedMenu, Whitelist bool, domain string) f
 		if msg == nil {
 			return
 		}
+		_ = client.ChannelMessageDelete(ChannelID, msg.ID)
 
 		split := strings.Split(msg.Content, " ")
 		var ValidUsers []*discordgo.User
