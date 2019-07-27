@@ -70,21 +70,23 @@ func ShowDomain(domain string) func(ChannelID string, MessageID string, menu *Em
 		}
 
 		if (!DomainInfo.Public && StringInSlice(OuterMenu.MenuInfo.Author, DomainInfo.Whitelist)) || (
-			DomainInfo.Public && !StringInSlice(OuterMenu.MenuInfo.Author, DomainInfo.Blacklist)) && user.Domain != DomainInfo.Id {
-				NewEmbedMenu.Reactions[MenuButton{
-					Emoji: "🚀",
-					Description: "This sets this domain as your default.",
-					Name: "Set As Default Domain",
-				}] = func(_ string, _ string, _ *EmbedMenu, _ *discordgo.Session) {
-					defer ShowDomain(domain)(ChannelID, MessageID, OuterMenu, client)
-					NewUser := GetUser(OuterMenu.MenuInfo.Author)
-					Update := make(map[string]interface{})
-					Update["domain"] = domain
-					err := r.Table("users").Get(NewUser.Id).Update(&Update).Exec(RethinkConnection)
-					if err != nil {
-						panic(err)
+			DomainInfo.Public && !StringInSlice(OuterMenu.MenuInfo.Author, DomainInfo.Blacklist)) {
+				if user.Domain != DomainInfo.Id {
+					NewEmbedMenu.Reactions[MenuButton{
+						Emoji: "🚀",
+						Description: "This sets this domain as your default.",
+						Name: "Set As Default Domain",
+					}] = func(_ string, _ string, _ *EmbedMenu, _ *discordgo.Session) {
+						defer ShowDomain(domain)(ChannelID, MessageID, OuterMenu, client)
+						NewUser := GetUser(OuterMenu.MenuInfo.Author)
+						Update := make(map[string]interface{})
+						Update["domain"] = domain
+						err := r.Table("users").Get(NewUser.Id).Update(&Update).Exec(RethinkConnection)
+						if err != nil {
+							panic(err)
+						}
+						InvalidateUserCache(NewUser.Tokens)
 					}
-					InvalidateUserCache(NewUser.Tokens)
 				}
 		}
 
