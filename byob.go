@@ -19,7 +19,7 @@ type BYOBResult struct {
 
 func HandleBYOB(domain string) func(ChannelID string, MessageID string, menu *EmbedMenu, client *discordgo.Session) {
 	return func(ChannelID string, MessageID string, menu *EmbedMenu, client *discordgo.Session) {
-		defer menu.Display(ChannelID, MessageID, client)
+		defer ShowDomain(domain)(ChannelID, MessageID, menu.parent, client)
 		_ = client.MessageReactionsRemoveAll(ChannelID, MessageID)
 
 		embed := &discordgo.MessageEmbed{
