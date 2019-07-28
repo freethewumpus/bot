@@ -93,6 +93,7 @@ func HandleBYOB(domain string) func(ChannelID string, MessageID string, menu *Em
 				if err != nil {
 					panic(err)
 				}
+				_, _ = client.ChannelMessageSend(UserChannel.ID, "**Success:** Check the channel where you opened the menu. Your menu should now be updated!")
 			}
 		}
 	}
