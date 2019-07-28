@@ -5,6 +5,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/go-redis/redis"
 	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
+	"io/ioutil"
 	"os"
 	"os/signal"
 	"syscall"
@@ -12,8 +13,15 @@ import (
 
 var RedisConnection *redis.Client
 var RethinkConnection *r.Session
+var BYOBTemplate []byte
 
 func main() {
+	template, err := ioutil.ReadFile("./byob_template.yaml")
+	if err != nil {
+		panic(err)
+	}
+	BYOBTemplate = template
+
 	UtilsInit()
 
 	MenuCache = map[string]*EmbedMenu{}
@@ -23,9 +31,6 @@ func main() {
 		RedisHost = "localhost:6379"
 	}
 	RedisPassword := os.Getenv("REDIS_PASSWORD")
-	if RedisPassword == "" {
-		RedisPassword = ""
-	}
 	RedisConnection = redis.NewClient(&redis.Options{
 		Addr: RedisHost,
 		Password: RedisPassword,

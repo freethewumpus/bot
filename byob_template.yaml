@@ -1,0 +1,26 @@
+#   __               _   _
+#  / _|             | | | |
+# | |_ _ __ ___  ___| |_| |__   _____      ___   _ _ __ ___  _ __  _   _ ___
+# |  _| '__/ _ \/ _ \ __| '_ \ / _ \ \ /\ / / | | | '_ ` _ \| '_ \| | | / __|
+# | | | | |  __/  __/ |_| | | |  __/\ V  V /| |_| | | | | | | |_) | |_| \__ \
+# |_| |_|  \___|\___|\__|_| |_|\___| \_/\_/  \__,_|_| |_| |_| .__(_)__,_|___/
+#                                                           | |
+#                                                           |_|
+# BYOB (Bring Your Own Bucket) Configuration
+# Simply fill out the configuration options below and DM the bot this file.
+
+s3_region: s3_region_here
+# Defines the S3 region that your bucket is in.
+# This is also known as the region slug on some providers.
+
+s3_endpoint: s3_endpoint_here
+# Defines the S3 endpoint.
+# For DigitalOcean Spaces, this will be <region slug>.digitaloceanspaces.com.
+
+s3_bucket: bucket_here
+# The bucket that will be used to save content.
+
+secret_access_key: secret_access_key_here
+access_key_id: access_key_id_here
+# The AWS secret access key/access key ID.
+# Guest access to buckets is forbidden!

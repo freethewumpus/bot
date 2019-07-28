@@ -132,6 +132,12 @@ func ShowDomain(domain string) func(ChannelID string, MessageID string, menu *Em
 					Name: "Whitelist Users",
 				}] = HandleBlackWhitelist(OuterMenu, true, domain)
 			}
+
+			NewEmbedMenu.Reactions[MenuButton{
+				Emoji: "🔧",
+				Description: "This will allow you to setup BYOB (Bring Your Own Bucket). You need DM's on for this to work.",
+				Name: "Bring Your Own Bucket",
+			}] = HandleBYOB(domain)
 		}
 
 		_ = client.MessageReactionsRemoveAll(ChannelID, MessageID)
