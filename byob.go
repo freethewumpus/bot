@@ -57,7 +57,7 @@ func HandleBYOB(domain string) func(ChannelID string, MessageID string, menu *Em
 			return
 		}
 
-		res := WaitForMessage(UserChannel.ID, MessageID, 10)
+		res := WaitForMessage(UserChannel.ID, menu.MenuInfo.Author, 15)
 		if res != nil && res.Attachments != nil && len(res.Attachments) == 1 {
 			Attachment := res.Attachments[0]
 			if 1000000 > Attachment.Size {
