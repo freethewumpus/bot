@@ -18,8 +18,9 @@ func OnMessage(client *discordgo.Session, msg *discordgo.MessageCreate) {
 		return
 	}
 
+	channel, _ := client.Channel(msg.ChannelID)
 	mentions := msg.Mentions
-	if len(mentions) == 1 && mentions[0].ID == client.State.User.ID {
+	if len(mentions) == 1 && mentions[0].ID == client.State.User.ID && channel.Type == discordgo.ChannelTypeGuildText {
 		go func() {
 			OpenMenu(client, msg)
 		}()
