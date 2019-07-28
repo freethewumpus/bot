@@ -14,18 +14,18 @@ func OnReady(client *discordgo.Session, _ *discordgo.Ready) {
 }
 
 func OnMessage(client *discordgo.Session, msg *discordgo.MessageCreate) {
-	if msg.Author.Bot {
-		return
-	}
+	go func() {
+		if msg.Author.Bot {
+			return
+		}
 
-	channel, _ := client.Channel(msg.ChannelID)
-	mentions := msg.Mentions
-	if len(mentions) == 1 && mentions[0].ID == client.State.User.ID && channel.Type == discordgo.ChannelTypeGuildText {
-		go func() {
+		channel, _ := client.Channel(msg.ChannelID)
+		mentions := msg.Mentions
+		if len(mentions) == 1 && mentions[0].ID == client.State.User.ID && channel.Type == discordgo.ChannelTypeGuildText {
 			OpenMenu(client, msg)
-		}()
-	}
-	MessageWaitHandler(msg.Message)
+		}
+		MessageWaitHandler(msg.Message)
+	}()
 }
 
 func OpenMenu(client *discordgo.Session, msg *discordgo.MessageCreate) {
@@ -43,21 +43,21 @@ func OpenMenu(client *discordgo.Session, msg *discordgo.MessageCreate) {
 }
 
 func OnReactionAdd(client *discordgo.Session, reaction *discordgo.MessageReactionAdd) {
-	message, err := client.ChannelMessage(reaction.ChannelID, reaction.MessageID)
-	if err != nil {
-		return
-	}
-	user, err := client.User(reaction.UserID)
-	if err != nil {
-		return
-	}
-	if user.Bot {
-		return
-	}
-	if message.Author.ID == client.State.User.ID && len(message.Embeds) == 1 && message.Embeds[0].Footer != nil {
-		MenuID := message.Embeds[0].Footer.Text
-		go func() {
+	go func() {
+		message, err := client.ChannelMessage(reaction.ChannelID, reaction.MessageID)
+		if err != nil {
+			return
+		}
+		user, err := client.User(reaction.UserID)
+		if err != nil {
+			return
+		}
+		if user.Bot {
+			return
+		}
+		if message.Author.ID == client.State.User.ID && len(message.Embeds) == 1 && message.Embeds[0].Footer != nil {
+			MenuID := message.Embeds[0].Footer.Text
 			HandleMenuReactionEdit(client, reaction, MenuID)
-		}()
-	}
+		}
+	}()
 }
