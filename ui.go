@@ -27,27 +27,39 @@ func CreateNewMenu(MenuID string, msg discordgo.Message) *EmbedMenu {
 		Emoji: "🕸",
 	})
 	Domains.AddBackButton()
-	Domains.Reactions[MenuButton{
-		Emoji: "🗺",
-		Name: "Add Domain",
-		Description: "This will guide you through adding a domain.",
-	}] = AddDomain
+	Domains.Reactions.Add(MenuReaction{
+		button:   MenuButton{
+			Emoji: "🗺",
+			Name: "Add Domain",
+			Description: "This will guide you through adding a domain.",
+		},
+		function: AddDomain,
+	})
 	user := GetUser(msg.Author.ID)
-	Domains.Reactions[MenuButton{
-		Emoji: "👥",
-		Name: "Get Owned Domains",
-		Description: "This will get all owned domains.",
-	}] = DomainPages("Owned Domains", user.GetOwnedDomains, 0, ShowDomain)
-	Domains.Reactions[MenuButton{
-		Emoji: "👱",
-		Name: "Get Whitelisted Domains",
-		Description: "This will get all whitelisted domains.",
-	}] = DomainPages("Whitelisted Domains", user.GetWhitelistedDomains, 0, ShowDomain)
-	Domains.Reactions[MenuButton{
-		Emoji: "🌐",
-		Name: "Get Public Domains",
-		Description: "This will get all public domains.",
-	}] = DomainPages("Public Domains", GetPublicDomains, 0, ShowDomain)
+	Domains.Reactions.Add(MenuReaction{
+		button:   MenuButton{
+			Emoji: "👥",
+			Name: "Get Owned Domains",
+			Description: "This will get all owned domains.",
+		},
+		function: DomainPages("Owned Domains", user.GetOwnedDomains, 0, ShowDomain),
+	})
+	Domains.Reactions.Add(MenuReaction{
+		button:   MenuButton{
+			Emoji: "👱",
+			Name: "Get Whitelisted Domains",
+			Description: "This will get all whitelisted domains.",
+		},
+		function: DomainPages("Whitelisted Domains", user.GetWhitelistedDomains, 0, ShowDomain),
+	})
+	Domains.Reactions.Add(MenuReaction{
+		button:   MenuButton{
+			Emoji: "🌐",
+			Name: "Get Public Domains",
+			Description: "This will get all public domains.",
+		},
+		function:  DomainPages("Public Domains", GetPublicDomains, 0, ShowDomain),
+	})
 
 	Tokens := MainMenu.NewChildMenu(discordgo.MessageEmbed{
 		Title: "Tokens Management",
@@ -59,16 +71,22 @@ func CreateNewMenu(MenuID string, msg discordgo.Message) *EmbedMenu {
 		Emoji: "🎟",
 	})
 	Tokens.AddBackButton()
-	Tokens.Reactions[MenuButton{
-		Emoji: "🥊",
-		Name: "Revoke Tokens",
-		Description: "This will revoke all your tokens.",
-	}] = TokenInvalidationEmbed
-	Tokens.Reactions[MenuButton{
-		Emoji: "🎟",
-		Name: "Generate Token",
-		Description: "This will generate a token. This requires DM's to be on.",
-	}] = TokenGenerationEmbed
+	Tokens.Reactions.Add(MenuReaction{
+		button:   MenuButton{
+			Emoji: "🥊",
+			Name: "Revoke Tokens",
+			Description: "This will revoke all your tokens.",
+		},
+		function:  TokenInvalidationEmbed,
+	})
+	Tokens.Reactions.Add(MenuReaction{
+		button:   MenuButton{
+			Emoji: "🎟",
+			Name: "Generate Token",
+			Description: "This will generate a token. This requires DM's to be on.",
+		},
+		function:  TokenGenerationEmbed,
+	})
 
 	UserInfo := GetUser(msg.Author.ID)
 
@@ -82,11 +100,14 @@ func CreateNewMenu(MenuID string, msg discordgo.Message) *EmbedMenu {
 		Emoji: "🗄",
 	})
 	FileNamingPattern.AddBackButton()
-	FileNamingPattern.Reactions[MenuButton{
-		Description: "This will allow you to change your file naming pattern.",
-		Name: "Change Pattern",
-		Emoji: "🗄",
-	}] = ChangePattern
+	FileNamingPattern.Reactions.Add(MenuReaction{
+		button:   MenuButton{
+			Description: "This will allow you to change your file naming pattern.",
+			Name: "Change Pattern",
+			Emoji: "🗄",
+		},
+		function:  ChangePattern,
+	})
 
 	return &MainMenu
 }

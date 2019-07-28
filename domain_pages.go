@@ -30,28 +30,40 @@ func DomainPages(
 			}
 
 			if len(domains) > 5 && after != 0 {
-				NewEmbedMenu.Reactions[MenuButton{
-					Name: "Back Page",
-					Description: "Go back a page.",
-					Emoji: "◀",
-				}] = DomainPages(title, DomainFunc, after - 5, function)
+				Reaction := MenuReaction{
+					button:   MenuButton{
+						Name: "Back Page",
+						Description: "Go back a page.",
+						Emoji: "◀",
+					},
+					function: DomainPages(title, DomainFunc, after - 5, function),
+				}
+				NewEmbedMenu.Reactions.Add(Reaction)
 			}
 
 			if len(domains) > 5 && len(DomainPart) == 5 {
-				NewEmbedMenu.Reactions[MenuButton{
-					Name: "Forward Page",
-					Description: "Go forward a page.",
-					Emoji: "▶",
-				}] = DomainPages(title, DomainFunc, after + 5, function)
+				Reaction := MenuReaction{
+					button:   MenuButton{
+						Name: "Forward Page",
+						Description: "Go forward a page.",
+						Emoji: "▶",
+					},
+					function: DomainPages(title, DomainFunc, after + 5, function),
+				}
+				NewEmbedMenu.Reactions.Add(Reaction)
 			}
 
 			letters := []string{"🇦", "🇧", "🇨", "🇩", "🇪"}
 			for i, v := range DomainPart {
-				NewEmbedMenu.Reactions[MenuButton{
-					Name: v.Id,
-					Description: fmt.Sprintf("Owned by <@%s>.", v.Owner),
-					Emoji: letters[i],
-				}] = function(v.Id)
+				Reaction := MenuReaction{
+					button:   MenuButton{
+						Name: v.Id,
+						Description: fmt.Sprintf("Owned by <@%s>.", v.Owner),
+						Emoji: letters[i],
+					},
+					function: function(v.Id),
+				}
+				NewEmbedMenu.Reactions.Add(Reaction)
 			}
 
 			NewEmbedMenu.Display(ChannelID, MessageID, client)
