@@ -57,7 +57,7 @@ func AddDomain(ChannelID string, MessageID string, menu *EmbedMenu, client *disc
 
 	embed := &discordgo.MessageEmbed{
 		Title: "Waiting for your domain...",
-		Description: "You have 5 minutes to enter your domain in this channel. Simply write it in the format of `example.com`. Make sure before you enter it, you set the A record in your DNS to `" + os.Getenv("CLUSTER_IP") + "`. **Your next message in this channel will be automatically scanned/treated as your domain.**",
+		Description: "You have 5 minutes to enter your domain in this channel. Simply write it in the format of `example.com`. Make sure before you enter it, you set the CNAME record in your DNS to `" + os.Getenv("CLUSTER_CNAME") + "`. **Your next message in this channel will be automatically scanned/treated as your domain.**",
 	}
 	msg, err := client.ChannelMessageEditComplex(&discordgo.MessageEdit{
 		ID: MessageID,
