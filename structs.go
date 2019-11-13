@@ -16,13 +16,12 @@ type S3Bucket struct {
 }
 
 type Domain struct {
-	Id         string    `gorethink:"id,omitempty"`
-	Public     bool      `gorethink:"public"`
-	Whitelist  []string  `gorethink:"whitelist"`
-	Blacklist  []string  `gorethink:"blacklist"`
-	Owner      string    `gorethink:"owner"`
-	Bucket     *S3Bucket `gorethink:"bucket"`
-	Encryption bool      `gorethink:"encryption"`
+	Id        string    `gorethink:"id,omitempty"`
+	Public    bool      `gorethink:"public"`
+	Whitelist []string  `gorethink:"whitelist"`
+	Blacklist []string  `gorethink:"blacklist"`
+	Owner     string    `gorethink:"owner"`
+	Bucket    *S3Bucket `gorethink:"bucket"`
 }
 
 type User struct {
@@ -30,6 +29,7 @@ type User struct {
 	Domain       string   `gorethink:"domain"`
 	Tokens       []string `gorethink:"tokens"`
 	NamingScheme string   `gorethink:"naming_scheme"`
+	Encryption   bool     `gorethink:"encryption"`
 }
 
 func (user User) NewDomain(DomainName string) {
