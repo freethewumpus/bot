@@ -38,6 +38,7 @@ func CreateNewMenu(MenuID string, msg discordgo.Message) *EmbedMenu {
 			r.Table("users").Get(user.Id).Update(&map[string]interface{}{
 				"encryption": user.Encryption,
 			}).Exec(RethinkConnection)
+			InvalidateUserCache(user.Tokens)
 		},
 	})
 
